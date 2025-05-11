@@ -171,7 +171,7 @@ export default function CampaignHistoryPage() {
                         {campaign.status ? (campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)).replace(/_/g, ' ') : 'N/A'}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="text-xs text-slate-700 mt-1">
                       Created: {new Date(campaign.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} at {new Date(campaign.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
@@ -211,7 +211,7 @@ export default function CampaignHistoryPage() {
 </svg><path d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
                           Audience Rules:
                         </h3>
-                        <pre className="text-xs bg-slate-100 p-3 rounded-md overflow-x-auto shadow-inner">
+                          <pre className="text-xs bg-slate-100 text-slate-700 p-3 rounded-md overflow-x-auto shadow-inner">
                           {JSON.stringify(campaign.segmentRules, null, 2)}
                         </pre>
                       </div>
@@ -224,7 +224,7 @@ export default function CampaignHistoryPage() {
 </svg><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z"/></svg>
                           Message Template:
                         </h3>
-                        <p className="text-xs bg-slate-100 p-3 rounded-md whitespace-pre-wrap shadow-inner">{campaign.messageTemplate}</p>
+                        <p className="text-xs bg-slate-100 text-slate-700 p-3 rounded-md whitespace-pre-wrap shadow-inner">{campaign.messageTemplate}</p>
                       </div>
 
                       {/* AI Summary Section */}

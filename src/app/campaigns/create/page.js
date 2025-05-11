@@ -276,7 +276,8 @@ const handleGenerateMessageSuggestions = async () => {
                   onChange={(e) => setCampaignName(e.target.value)}
                   required
                   placeholder="Enter campaign name"
-                  className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+                  className="w-full px-4 py-2 rounded-lg border border-slate-200 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+// Added: text-slate-700 (or text-gray-700, text-black, etc.)
                 />
               </div>
             </div>
@@ -302,7 +303,7 @@ const handleGenerateMessageSuggestions = async () => {
                     value={naturalLanguageQuery}
                     onChange={(e) => setNaturalLanguageQuery(e.target.value)}
                     placeholder="e.g., Customers who spent over 5000 and were active in the last 30 days"
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-200 text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                   ></textarea>
                 </div>
                 <button
@@ -361,7 +362,7 @@ const handleGenerateMessageSuggestions = async () => {
                       value={rule.value}
                       onChange={(e) => handleRuleChange(index, 'value', e.target.value)}
                       required
-                      className="w-full md:flex-1 px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
+                      className="w-full md:flex-1 px-3 py-2 rounded-lg border border-slate-200 text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
                     />
                     {rules.length > 1 && (
                       <button
