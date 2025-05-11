@@ -1,6 +1,5 @@
-// src/app/api/hello/route.js
 import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongdb'; // Make sure this path alias is correct
+import dbConnect from '@/lib/mongdb';
 
 export async function GET(request) {
     try {

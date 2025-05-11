@@ -1,4 +1,4 @@
-// src/models/CommunicationLog.js
+
 import mongoose from 'mongoose';
 
 const CommunicationLogSchema = new mongoose.Schema({
@@ -12,29 +12,27 @@ const CommunicationLogSchema = new mongoose.Schema({
     ref: 'Customer',
     required: true,
   },
-  // Could also store customer email here for denormalization if frequently needed
-  // customerEmail: String,
+  
   status: {
     type: String,
-    enum: ['pending', 'sent', 'failed', 'delivered'], // 'delivered' for the bonus receipt API
+    enum: ['pending', 'sent', 'failed', 'delivered'], 
     default: 'pending',
     required: true,
   },
-  messageContent: { // The actual personalized message sent
+  messageContent: { 
     type: String,
   },
   sentAt: {
     type: Date,
   },
-  failureReason: { // Optional: if status is 'failed'
+  failureReason: { 
     type: String,
   },
-  // vendorMessageId: String, // Optional: ID from the dummy vendor API
+  
 }, {
   timestamps: true,
 });
 
-// Indexing can improve query performance for common lookups
 CommunicationLogSchema.index({ campaignId: 1 });
 CommunicationLogSchema.index({ customerId: 1 });
 CommunicationLogSchema.index({ status: 1 });

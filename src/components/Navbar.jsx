@@ -1,4 +1,3 @@
-// src/components/Navbar.jsx
 "use client";
 import Link from 'next/link';
 import LoginBtn from './LoginBtn';
@@ -19,7 +18,6 @@ export default function Navbar() {
     <nav className="bg-gradient-to-r from-slate-800 to-slate-900 text-white shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo and brand */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center group">
               <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-lg w-10 h-10 flex items-center justify-center mr-2 shadow-md group-hover:shadow-indigo-500/30 transition-all duration-300">
@@ -33,7 +31,7 @@ export default function Navbar() {
               </span>
             </Link>
             
-            {/* Desktop navigation */}
+            
             <div className="hidden md:block ml-10">
               <div className="flex items-baseline space-x-1">
                 {navLinks.map((link) => (
@@ -53,9 +51,8 @@ export default function Navbar() {
             </div>
           </div>
           
-          {/* Right side elements */}
+          
           <div className="flex items-center space-x-4">
-            {/* AI Assistant Button (Desktop) */}
             <button className="hidden md:flex items-center px-3 py-1.5 text-sm font-medium rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm transition-all duration-200">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -63,12 +60,12 @@ export default function Navbar() {
               <span>AI Assistant</span>
             </button>
             
-            {/* Login button */}
+            
             <div className="hidden md:block">
               <LoginBtn />
             </div>
             
-            {/* Mobile menu button */}
+            
             <div className="md:hidden">
               <button 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -90,7 +87,7 @@ export default function Navbar() {
         </div>
       </div>
       
-      {/* Mobile menu */}
+      
       <div className={`md:hidden ${mobileMenuOpen ? 'block' : 'hidden'}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 bg-slate-900/90 backdrop-blur-sm">
           {navLinks.map((link) => (

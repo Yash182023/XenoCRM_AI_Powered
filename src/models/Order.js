@@ -1,10 +1,9 @@
-// src/models/Order.js
 import mongoose from 'mongoose';
 
 const OrderSchema = new mongoose.Schema({
   customerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Customer', // Reference to the Customer model
+    ref: 'Customer', 
     required: [true, 'Please provide a customer ID for the order.'],
   },
   amount: {
@@ -16,10 +15,7 @@ const OrderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  // createdBy: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'User',
-  // }
+ 
 }, {
   timestamps: true,
 });

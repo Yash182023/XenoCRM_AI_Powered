@@ -11,9 +11,9 @@ export default function CampaignHistoryPage() {
   const [campaigns, setCampaigns] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [aiSummaries, setAiSummaries] = useState({}); // { campaignId: "summary text..." }
-  const [isGeneratingSummary, setIsGeneratingSummary] = useState({}); // { campaignId: true/false }
-  const [summaryError, setSummaryError] = useState({}); // { campaignId: "error message" }
+  const [aiSummaries, setAiSummaries] = useState({}); 
+  const [isGeneratingSummary, setIsGeneratingSummary] = useState({}); 
+  const [summaryError, setSummaryError] = useState({}); 
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -64,15 +64,13 @@ export default function CampaignHistoryPage() {
 
 
   try {
-    // Prepare data to send to the AI
+    
     const payload = {
       campaignName: campaign.name,
-      // segmentRules: campaign.segmentRules, // Could be too verbose, maybe a summary of rules
       messageTemplate: campaign.messageTemplate,
       audienceSize: campaign.audienceSize,
       sentCount: campaign.sentCount,
       failedCount: campaign.failedCount,
-      // You could add more context like campaign creation date if relevant
     };
 
     const res = await fetch('/api/ai/summarize-campaign', {
@@ -101,14 +99,12 @@ export default function CampaignHistoryPage() {
 };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8"> {/* Added py-8 for overall page padding */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-8"> 
       <div className="container mx-auto px-4 md:px-8">
-        {/* Header section */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-10">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-slate-800 flex items-center">
               <span className="bg-gradient-to-r from-teal-600 to-cyan-600 text-transparent bg-clip-text">Campaign History</span>
-              {/* Optional: Icon or badge */}
             </h1>
             <p className="text-slate-500 mt-1">Review performance and insights from your past campaigns.</p>
           </div>
@@ -122,8 +118,6 @@ export default function CampaignHistoryPage() {
             Create New Campaign
           </Link>
         </div>
-
-        {/* Loading and Error States */}
         {(status === 'loading' || isLoading) && (
           <div className="text-center py-10">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
@@ -143,8 +137,6 @@ export default function CampaignHistoryPage() {
             <p className="text-sm text-red-500 mt-1">Could not load campaign history. Please try again later.</p>
           </div>
         )}
-
-        {/* Campaign List */}
         {!isLoading && !error && session && (
           campaigns.length === 0 ? (
             <div className="text-center py-20 bg-white p-10 rounded-xl shadow-md">
@@ -159,7 +151,6 @@ export default function CampaignHistoryPage() {
             <div className="space-y-6">
               {campaigns.map((campaign) => (
                 <div key={campaign._id} className="bg-white rounded-xl shadow-md overflow-hidden border border-slate-100 hover:shadow-lg transition-shadow duration-200">
-                  {/* Campaign Header */}
                   <div className="p-5 md:p-6 bg-slate-50 border-b border-slate-200">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
                       <h2 className="text-xl md:text-2xl font-semibold text-indigo-700 mb-1 sm:mb-0">{campaign.name}</h2>
@@ -175,8 +166,6 @@ export default function CampaignHistoryPage() {
                       Created: {new Date(campaign.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} at {new Date(campaign.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
-
-                  {/* Campaign Stats */}
                   <div className="p-5 md:p-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
                     <div>
                         <p className="text-xs text-slate-500 uppercase tracking-wider">Audience</p>
@@ -192,7 +181,6 @@ export default function CampaignHistoryPage() {
                     </div>
                   </div>
                   
-                  {/* Collapsible Details Section (Example using details/summary for simplicity) */}
                   <details className="group">
                     <summary className="p-5 md:p-6 border-t border-slate-200 cursor-pointer list-none flex justify-between items-center hover:bg-slate-50 transition-colors">
                       <span className="text-sm font-medium text-slate-600">View Details & AI Summary</span>
@@ -203,7 +191,6 @@ export default function CampaignHistoryPage() {
                       </span>
                     </summary>
                     <div className="p-5 md:p-6 border-t border-slate-200 bg-slate-50/50">
-                      {/* Audience Rules */}
                       <div className="mb-4">
                         <h3 className="text-sm font-semibold text-slate-900 mb-1 flex items-center">
                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="mr-2 text-purple-600" viewBox="0 0 16 16"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="mr-2 text-purple-600" viewBox="0 0 16 16">
@@ -216,7 +203,6 @@ export default function CampaignHistoryPage() {
                         </pre>
                       </div>
 
-                      {/* Message Template */}
                       <div className="mb-4">
                         <h3 className="text-sm font-semibold text-slate-900 mb-1 flex items-center">
                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="mr-2 text-indigo-600" viewBox="0 0 16 16"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="mr-2 text-indigo-600" viewBox="0 0 16 16">
@@ -227,7 +213,6 @@ export default function CampaignHistoryPage() {
                         <p className="text-xs bg-slate-100 text-slate-700 p-3 rounded-md whitespace-pre-wrap shadow-inner">{campaign.messageTemplate}</p>
                       </div>
 
-                      {/* AI Summary Section */}
                       <div className="mt-4">
                         <button
                           type="button"

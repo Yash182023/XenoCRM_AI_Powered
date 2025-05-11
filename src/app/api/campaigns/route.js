@@ -1,15 +1,13 @@
-// src/app/api/campaigns/route.js
 import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongdb';// Corrected path if mongodb.js is in lib
+import dbConnect from '@/lib/mongdb';
 import Campaign from '@/models/Campaign';
 import Customer from '@/models/Customer';
-import CommunitcationLog from '@/models/CommunitcationLog';// CORRECTED TYPO and standard import
+import CommunitcationLog from '@/models/CommunitcationLog';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { buildMongoQueryFromRules } from '@/lib/queryBuilder';
 
-// --- Helper function for triggering message sending ---
-async function triggerMessageSending(communicationLogDocuments) { // Takes array of actual DB documents
+async function triggerMessageSending(communicationLogDocuments) { 
   if (!communicationLogDocuments || communicationLogDocuments.length === 0) {
     console.log("No communication log documents to send.");
     return;
@@ -18,10 +16,10 @@ async function triggerMessageSending(communicationLogDocuments) { // Takes array
   console.log(`Attempting to send ${communicationLogDocuments.length} messages via dummy vendor...`);
   const vendorUrl = `${process.env.NEXTAUTH_URL}/api/dummy-vendor/send-message`;
 
-  const sendPromises = communicationLogDocuments.map(async (logDoc) => { // logDoc is a Mongoose document
+  const sendPromises = communicationLogDocuments.map(async (logDoc) => { 
     try {
       const payload = {
-        communicationLogId: logDoc._id.toString(), // Use the actual _id from the saved document
+        communicationLogId: logDoc._id.toString(), 
         customerId: logDoc.customerId.toString(),
         messageContent: logDoc.messageContent,
       };
@@ -36,7 +34,6 @@ async function triggerMessageSending(communicationLogDocuments) { // Takes array
         const errorData = await response.text();
         console.error(`Error calling dummy vendor for logId ${payload.communicationLogId}: ${response.status} - ${errorData}`);
       } else {
-        // console.log(`Successfully called dummy vendor for logId ${payload.communicationLogId}`);
       }
     } catch (error) {
       console.error(`Failed to call dummy vendor for log for communicationLogId ${logDoc._id}:`, error);
@@ -46,7 +43,6 @@ async function triggerMessageSending(communicationLogDocuments) { // Takes array
   await Promise.all(sendPromises);
   console.log("All messages have been dispatched to the dummy vendor for processing.");
 }
-// --- End of helper function ---
 
 export async function POST(request) {
   const session = await getServerSession(authOptions);
@@ -64,25 +60,25 @@ export async function POST(request) {
       return NextResponse.json({ message: "Name, segment rules, and message template are required." }, { status: 400 });
     }
 
-    // 1. Save the Campaign
+   
     const newCampaign = new Campaign({
       name,
       segmentRules,
       messageTemplate,
       createdByUserId: session.user.id,
-      status: 'processing', // Changed status to 'processing' while we work
+      status: 'processing', 
     });
     await newCampaign.save();
     console.log(`Campaign ${newCampaign._id} saved. Status: processing.`);
 
-    // 2. Fetch Customers Matching Segment Rules
+    
     const mongoQuery = buildMongoQueryFromRules(segmentRules);
     const targetCustomers = await Customer.find(mongoQuery).select('_id name email').lean();
     console.log(`Found ${targetCustomers.length} customers for campaign ${newCampaign._id}`);
 
     if (targetCustomers.length === 0) {
       console.log(`No customers found for campaign ${newCampaign._id}.`);
-      newCampaign.status = 'completed_no_audience'; // More descriptive status
+      newCampaign.status = 'completed_no_audience'; 
       await newCampaign.save();
       return NextResponse.json({
         message: "Campaign created, but no customers matched the segment. No messages will be sent.",
@@ -90,7 +86,6 @@ export async function POST(request) {
       }, { status: 201 });
     }
 
-    // 3. Create CommunicationLog Entries for each targeted customer
     const logEntriesToCreate = targetCustomers.map(customer => {
       let personalizedMessage = messageTemplate
         .replace(/{{name}}/gi, customer.name || '')
@@ -103,23 +98,18 @@ export async function POST(request) {
       };
     });
 
-    let createdLogDocuments = []; // To store the actual documents from DB
+    let createdLogDocuments = []; 
     if (logEntriesToCreate.length > 0) {
-      // insertMany returns an array of the inserted documents, including their _ids
       createdLogDocuments = await CommunitcationLog.insertMany(logEntriesToCreate); // CORRECTED MODEL NAME
       console.log(`${createdLogDocuments.length} communication log entries created for campaign ${newCampaign._id}`);
     }
 
-    // 4. Trigger message sending with the actual created log documents
     if (createdLogDocuments.length > 0) {
-      await triggerMessageSending(createdLogDocuments); // Call the helper function
-      // After dispatching, we can update the campaign status.
-      // The actual 'sent'/'failed' status will be on individual logs.
-      newCampaign.status = 'active'; // Or 'dispatched'
+      await triggerMessageSending(createdLogDocuments);
+      newCampaign.status = 'active'; 
       await newCampaign.save();
       console.log(`Campaign ${newCampaign._id} status updated to active after dispatching messages.`);
     } else {
-        // This case should be covered by targetCustomers.length === 0, but as a fallback
         newCampaign.status = 'completed_no_logs';
         await newCampaign.save();
     }
@@ -149,9 +139,8 @@ export async function GET(request) {
         await dbConnect();
         const campaignsFromDB = await Campaign.find({ createdByUserId: session.user.id })
                                           .sort({ createdAt: -1 })
-                                          .lean(); // Use .lean() for plain JS objects, easier to add properties
+                                          .lean(); 
 
-        // For each campaign, fetch its communication log stats
         const campaignsWithStats = await Promise.all(
             campaignsFromDB.map(async (campaign) => {
                 const logs = await CommunitcationLog.find({ campaignId: campaign._id }).select('status').lean();
@@ -159,14 +148,12 @@ export async function GET(request) {
                 const audienceSize = logs.length;
                 const sentCount = logs.filter(log => log.status === 'sent' || log.status === 'delivered').length; // delivered is also a success
                 const failedCount = logs.filter(log => log.status === 'failed').length;
-                // const pendingCount = logs.filter(log => log.status === 'pending').length; // If you want to show pending
 
                 return {
-                    ...campaign, // Spread the original campaign properties
+                    ...campaign, 
                     audienceSize,
                     sentCount,
                     failedCount,
-                    // pendingCount
                 };
             })
         );

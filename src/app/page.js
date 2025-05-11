@@ -1,51 +1,3 @@
-// // src/app/page.js
-// "use client"; // If using useSession or other client hooks
-// import Link from 'next/link';
-// import { useSession } from 'next-auth/react'; // Optional: for personalized welcome
-
-// export default function HomePage() {
-//   const { data: session, status } = useSession();
-
-//   return (
-//     <div className="text-center">
-//       <header className="bg-white shadow rounded-lg p-8 mb-10">
-//         <h1 className="text-4xl font-bold text-gray-800 mb-3">
-//           Welcome to MiniCRM!
-//         </h1>
-//         {status === "authenticated" && session?.user?.name && (
-//           <p className="text-xl text-gray-600 mb-6">
-//             Hello, {session.user.name}! Lets manage your campaigns.
-//           </p>
-//         )}
-//         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-//           This platform enables customer segmentation, personalized campaign delivery, and intelligent insights using modern tools and AI.
-//         </p>
-//       </header>
-
-//       <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-//         <Link href="/campaigns/create" className="block p-8 bg-indigo-600 text-white rounded-lg shadow-lg hover:bg-indigo-700 transition duration-150 ease-in-out transform hover:scale-105">
-//             <h2 className="text-2xl font-semibold mb-2">🚀 Create New Campaign</h2>
-//             <p>Define your audience and launch personalized marketing messages.</p>
-//         </Link>
-//         <Link href="/campaigns/history" className="block p-8 bg-teal-500 text-white rounded-lg shadow-lg hover:bg-teal-600 transition duration-150 ease-in-out transform hover:scale-105">
-//             <h2 className="text-2xl font-semibold mb-2">📜 View Campaign History</h2>
-//             <p>Track the performance and see insights from your past campaigns.</p>
-//         </Link>
-//       </div>
-
-//       {/* You can add more sections here, e.g., brief explanation of AI features */}
-//       <section className="mt-16 p-6 bg-white shadow rounded-lg">
-//         <h3 className="text-2xl font-semibold text-gray-700 mb-4">Powered by AI</h3>
-//         <ul className="list-disc list-inside text-left max-w-xl mx-auto text-gray-600 space-y-2">
-//             <li>**Natural Language to Rules:** Describe your audience, and AI creates the segments.</li>
-//             <li>**AI Message Suggestions:** Get creative message ideas for your campaigns.</li>
-//             <li>**Performance Summaries:** Understand campaign results with AI-generated insights.</li>
-//         </ul>
-//       </section>
-//     </div>
-//   );
-// }
-
 "use client";
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -55,7 +7,6 @@ export default function HomePage() {
 
   return (
     <div>
-      {/* Hero Section */}
       <section className="bg-gradient-to-r from-indigo-600 to-purple-700 text-white rounded-2xl overflow-hidden shadow-xl mb-12">
         <div className="container mx-auto px-6 py-16 relative">
           <div className="max-w-3xl">
@@ -85,8 +36,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Quick Action Cards */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-white-800 mb-6">Quick Actions</h2>
         <div className="grid md:grid-cols-3 gap-6">
@@ -128,7 +77,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* AI Features Section */}
+      
       <section className="bg-white rounded-2xl shadow-md p-8 mb-12">
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-3/5 md:pr-8 mb-6 md:mb-0">

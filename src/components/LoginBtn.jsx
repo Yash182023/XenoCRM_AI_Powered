@@ -1,54 +1,3 @@
-// // src/components/LoginBtn.jsx
-// "use client";
-
-// import { useSession, signIn, signOut } from "next-auth/react";
-// import Image from "next/image"; // Optional: for user image
-
-// export default function LoginBtn() {
-//   const { data: session, status } = useSession();
-
-//   if (status === "loading") {
-//     return <p>Loading...</p>;
-//   }
-
-//   if (session) {
-//     return (
-//       <div className="flex items-center gap-4">
-//         {session.user.image && (
-//           <Image
-//             src={session.user.image}
-//             alt={session.user.name || "User avatar"}
-//             width={32}
-//             height={32}
-//             className="rounded-full"
-//           />
-//         )}
-//         <p>
-//           Signed in as {session.user.name || session.user.email}
-//         </p>
-//         <button
-//           onClick={() => signOut()}
-//           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-//         >
-//           Sign out
-//         </button>
-//       </div>
-//     );
-//   }
-//   return (
-//     <>
-//       <p className="mr-4">Not signed in</p>
-//       <button
-//         onClick={() => signIn("google")}
-//         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-//       >
-//         Sign in with Google
-//       </button>
-//     </>
-//   );
-// }
-
-// src/components/LoginBtn.jsx
 "use client";
 
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -60,7 +9,6 @@ export default function LoginBtn() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

@@ -1,12 +1,9 @@
-// src/app/api/ai/nl-to-rules/route.js
 import { NextResponse } from 'next/server';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { generateText } from '@/lib/gemini'; // Your Gemini utility
+import { generateText } from '@/lib/gemini'; 
 
-// Define the prompt for Gemini
 function constructPromptForNLRules(userQuery) {
-  // This prompt is crucial and will likely need iteration and refinement!
   return `You are an expert AI assistant that converts natural language customer descriptions into structured JSON segmentation rules for a CRM.
 Your goal is to output a valid JSON array of rule objects. Do NOT include any explanatory text before or after the JSON output itself.
 Available customer fields for segmentation:
@@ -75,44 +72,35 @@ export async function POST(request) {
     const geminiResponseText = await generateText(prompt);
     console.log("Raw Gemini Response for NL to Rules:", geminiResponseText);
 
-    // Attempt to parse the response as JSON
     let parsedRules = [];
     try {
-      // Gemini might sometimes include markdown ```json ... ``` or just the array.
-      // Try to extract JSON if it's wrapped.
       const jsonMatch = geminiResponseText.match(/```json\s*([\s\S]*?)\s*```|(\[[\s\S]*\])/);
       let jsonString = "";
 
       if (jsonMatch) {
-        jsonString = jsonMatch[1] || jsonMatch[2]; // Prefer content within ```json block or the array itself
+        jsonString = jsonMatch[1] || jsonMatch[2];
       } else {
-        // If no clear JSON block, assume the whole response might be JSON (less reliable)
         jsonString = geminiResponseText;
       }
       
       parsedRules = JSON.parse(jsonString.trim());
 
-      // Further validation of the parsed rules structure
       if (!Array.isArray(parsedRules) || !parsedRules.every(
           rule => typeof rule.field === 'string' &&
                   typeof rule.operator === 'string' &&
                   rule.value !== undefined
         )) {
           console.warn("Gemini response parsed but not a valid rule array structure:", parsedRules);
-          // Return empty or a specific error if structure is bad
-          // For now, let's allow it and let frontend do more checks or user correct
       }
 
     } catch (parseError) {
       console.error("Failed to parse Gemini response as JSON:", parseError);
       console.error("Gemini raw text was:", geminiResponseText);
-      // If parsing fails, it's safer to return an empty array or an error message
-      // so the frontend doesn't try to use malformed rules.
       return NextResponse.json({ 
         message: "AI generated an invalid response format. Please try rephrasing your query.",
-        rules: [], // Send empty rules so frontend can handle it
-        debug_ai_response: geminiResponseText // For debugging
-      }, { status: 500 }); // Or 400 if client can rephrase
+        rules: [], 
+        debug_ai_response: geminiResponseText 
+      }, { status: 500 }); 
     }
 
     return NextResponse.json({ rules: parsedRules }, { status: 200 });

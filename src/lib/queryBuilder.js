@@ -1,9 +1,8 @@
-// src/lib/queryBuilder.js
 export function buildMongoQueryFromRules(rules) {
   const query = { $and: [] };
 
   if (!rules || !Array.isArray(rules) || rules.length === 0) {
-    return {}; // No rules, match all (or handle as error if preferred)
+    return {}; 
   }
 
   rules.forEach(rule => {
@@ -11,12 +10,12 @@ export function buildMongoQueryFromRules(rules) {
     let condition = {};
     let numericValue;
 
-    // Ensure value is not empty string before parsing
+    
     const cleanedValue = typeof value === 'string' ? value.trim() : value;
     if (cleanedValue === '' || cleanedValue === null || cleanedValue === undefined) {
-        // Skip rule if value is empty, or throw error, or handle as needed
+       
         console.warn(`Skipping rule due to empty value: ${JSON.stringify(rule)}`);
-        return; // Or continue;
+        return; 
     }
 
     if (field === 'lastActiveDate') {
@@ -44,7 +43,7 @@ export function buildMongoQueryFromRules(rules) {
         default: condition[field] = { $eq: numericValue };
       }
     } else {
-      // For other fields, assume direct equality (can be expanded)
+     
       condition[field] = { $eq: cleanedValue };
     }
 

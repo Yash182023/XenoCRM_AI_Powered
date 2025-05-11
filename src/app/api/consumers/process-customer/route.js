@@ -1,20 +1,16 @@
-// src/app/api/consumers/process-customer/route.js
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongdb';
 import Customer from '@/models/Customer';
-// Correct import for App Router
-import { verifySignatureAppRouter } from "@upstash/qstash/nextjs"; // <<< CHANGE THIS IMPORT
+import { verifySignatureAppRouter } from "@upstash/qstash/nextjs";
 
-async function handler(request) { // request is a standard Request object
+async function handler(request) { 
   console.log("QSTASH APP ROUTER CONSUMER HANDLER CALLED");
 
   let body;
   try {
-    // For App Router, `request.json()` is the standard way
     body = await request.json();
   } catch (e) {
     console.error("QStash Consumer (App Router): Failed to parse request.json()", e);
-    // If body parsing fails, QStash might resend. It's good to see what was sent.
     try {
         const textBody = await request.text();
         console.error("QStash Consumer (App Router): Request body as text:", textBody);
@@ -48,5 +44,4 @@ async function handler(request) { // request is a standard Request object
   }
 }
 
-// Use the correct HOF for App Router
-export const POST = verifySignatureAppRouter(handler); // <<< CHANGE THIS LINE
+export const POST = verifySignatureAppRouter(handler);

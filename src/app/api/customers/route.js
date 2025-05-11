@@ -1,11 +1,9 @@
-// src/app/api/customers/route.js
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongdb';
 import Customer from '@/models/Customer';
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // Adjust path as per your project
-//import customerIngestionQueue from '@/lib/queues/customerQueue'; // For BullMQ
-import { Client } from "@upstash/qstash"; // For QStash
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { Client } from "@upstash/qstash";
 
 let qstashClient;
 if (process.env.QSTASH_TOKEN) {
@@ -25,11 +23,10 @@ export async function POST(request) {
     if (!name || !email) {
       return NextResponse.json({ message: "Name and Email are required." }, { status: 400 });
     }
-    // Add other synchronous validation...
+   
 
     const jobData = { name, email, totalSpend, visitCount, lastActiveDate };
 
-    // Conditionally use QStash or BullMQ
     if (process.env.ASYNC_PROCESSING_MODE === 'qstash') {
       if (!qstashClient) {
         console.error("/api/customers: QStash client not initialized. QSTASH_TOKEN missing?");
@@ -42,17 +39,14 @@ export async function POST(request) {
 
       console.log("/api/customers: Publishing job to QStash for URL:", process.env.QSTASH_CUSTOMER_CONSUMER_URL);
       const qstashResponse = await qstashClient.publishJSON({
-        url: process.env.QSTASH_CUSTOMER_CONSUMER_URL, // Your consumer endpoint
-        // topic: "customer-ingestion", // Or publish to a topic
+        url: process.env.QSTASH_CUSTOMER_CONSUMER_URL, 
         body: jobData,
-        // headers: { ... } // Optional: custom headers for your consumer
-        // delay: "5s", // Optional: delay job
-        // retries: 3, // Optional: configure retries
+        
       });
       console.log(`/api/customers: Job ${qstashResponse.messageId} published to QStash.`);
       return NextResponse.json({ message: "Customer data received and queued for processing (QStash).", messageId: qstashResponse.messageId }, { status: 202 });
 
-    } else { // Default to BullMQ or if ASYNC_PROCESSING_MODE is 'bullmq' or not set
+    } else { 
       if (!customerIngestionQueue) {
         console.error("/api/customers: customerIngestionQueue (BullMQ) is not initialized.");
         return NextResponse.json({ message: "Internal Server Error: Queue service (BullMQ) unavailable." }, { status: 503 });
@@ -68,7 +62,6 @@ export async function POST(request) {
   }
 }
 
-// Optional: GET method to fetch customers (you might need this later)
 export async function GET(request) {
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -77,7 +70,7 @@ export async function GET(request) {
 
     try {
         await dbConnect();
-        const customers = await Customer.find({}).sort({ createdAt: -1 }); // Get all, newest first
+        const customers = await Customer.find({}).sort({ createdAt: -1 }); 
         return NextResponse.json({ customers }, { status: 200 });
     } catch (error) {
         console.error("Error fetching customers:", error);

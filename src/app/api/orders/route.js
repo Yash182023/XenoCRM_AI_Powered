@@ -1,10 +1,9 @@
-// src/app/api/orders/route.js
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongdb';
 import Order from '@/models/Order';
-import Customer from '@/models/Customer'; // To validate customerId
+import Customer from '@/models/Customer'; 
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // Adjust path
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function POST(request) {
   // const session = await getServerSession(authOptions);
@@ -19,11 +18,10 @@ export async function POST(request) {
     const body = await request.json();
     const { customerId, amount, orderDate } = body;
 
-    if (!customerId || amount === undefined) { // amount can be 0
+    if (!customerId || amount === undefined) { 
       return NextResponse.json({ message: "Customer ID and Amount are required." }, { status: 400 });
     }
 
-    // Validate if the customerId exists
     const customerExists = await Customer.findById(customerId);
     if (!customerExists) {
       return NextResponse.json({ message: "Customer not found with the provided ID." }, { status: 404 });
@@ -33,18 +31,15 @@ export async function POST(request) {
       customerId,
       amount,
       orderDate,
-      // If you add 'createdBy' to your Order schema:
-      // createdBy: session.user.id,
+      
     });
 
     await newOrder.save();
 
-    // Optional: Update customer's totalSpend and visitCount (denormalization for faster reads)
-    // This is a common CRM pattern.
-    // Be mindful of atomicity if this app were to scale massively (use $inc and potentially transactions)
+    
     customerExists.totalSpend = (customerExists.totalSpend || 0) + newOrder.amount;
     customerExists.visitCount = (customerExists.visitCount || 0) + 1;
-    customerExists.lastActiveDate = newOrder.orderDate || Date.now(); // Update last active date
+    customerExists.lastActiveDate = newOrder.orderDate || Date.now(); 
     await customerExists.save();
 
 
@@ -59,7 +54,6 @@ export async function POST(request) {
   }
 }
 
-// Optional: GET method to fetch orders
 export async function GET(request) {
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -68,9 +62,8 @@ export async function GET(request) {
 
     try {
         await dbConnect();
-        // Example: Fetch orders and populate customer details
         const orders = await Order.find({})
-                                  .populate('customerId', 'name email') // Populate name and email from Customer
+                                  .populate('customerId', 'name email') 
                                   .sort({ orderDate: -1 });
         return NextResponse.json({ orders }, { status: 200 });
     } catch (error) {

@@ -1,4 +1,3 @@
-// src/models/Customer.js
 import mongoose from 'mongoose';
 
 const CustomerSchema = new mongoose.Schema({
@@ -10,7 +9,7 @@ const CustomerSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Please provide an email for the customer.'],
-    unique: true, // Ensures email is unique in the customers collection
+    unique: true, 
     trim: true,
     lowercase: true,
     match: [
@@ -30,17 +29,9 @@ const CustomerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  // To associate with the user who created/owns this customer data (optional but good)
-  // For now, we'll make it simple. If you want to tie customers to specific app users,
-  // you'd add a field like:
-  // createdBy: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'User', // Assuming you have a User model for app users
-  // }
+  
 }, {
-  timestamps: true, // Adds createdAt and updatedAt timestamps
+  timestamps: true, 
 });
 
-// If the model is already defined, use it. Otherwise, define it.
-// This is important for Next.js hot-reloading environments.
 export default mongoose.models.Customer || mongoose.model('Customer', CustomerSchema);

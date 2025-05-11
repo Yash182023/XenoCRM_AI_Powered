@@ -1,9 +1,8 @@
-// src/app/campaigns/create/page.js
-"use client"; // This page will have interactivity and state
+"use client";
 
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation'; // For redirection
+import { useRouter } from 'next/navigation';
 
 export default function CreateCampaignPage() {
   const { data: session, status } = useSession();
@@ -16,21 +15,20 @@ export default function CreateCampaignPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [naturalLanguageQuery, setNaturalLanguageQuery] = useState('');
-  const [isGeneratingRules, setIsGeneratingRules] = useState(false); // For loading state
-  const [nlError, setNlError] = useState(''); // For NL specific errors
-  const [campaignObjective, setCampaignObjective] = useState(''); // Optional objective
+  const [isGeneratingRules, setIsGeneratingRules] = useState(false); 
+  const [nlError, setNlError] = useState(''); 
+  const [campaignObjective, setCampaignObjective] = useState('');
   const [messageSuggestions, setMessageSuggestions] = useState([]);
   const [isGeneratingMessages, setIsGeneratingMessages] = useState(false);
   const [messageGenError, setMessageGenError] = useState('');
-  // Redirect if not authenticated
+  
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/'); // Or your login page
+      router.push('/'); 
     }
   }, [status, router]);
 
   const handleAddRule = () => {
-    // For now, new rules are always ANDed with the previous one
     setRules([...rules, { field: 'totalSpend', operator: '>', value: '', logic: 'AND' }]);
   };
 
@@ -42,7 +40,7 @@ export default function CreateCampaignPage() {
   };
 
   const handleRemoveRule = (index) => {
-    if (rules.length > 1) { // Keep at least one rule
+    if (rules.length > 1) { 
       setRules(rules.filter((_, i) => i !== index));
     }
   };
@@ -53,7 +51,7 @@ export default function CreateCampaignPage() {
   if (typeof rule.value === 'string') {
     return rule.value.trim() !== '';
   }
-  return rule.value !== undefined && rule.value !== null; // Numbers and booleans (if any) are fine if not undefined/null
+  return rule.value !== undefined && rule.value !== null; 
 });
 
 if (!allRuleValuesPresent) {
@@ -65,7 +63,6 @@ if (!allRuleValuesPresent) {
     setError('');
     setAudienceSize(null);
     try {
-      // TODO: Create this API endpoint
       const res = await fetch('/api/segments/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -103,7 +100,6 @@ if (!campaignName.trim() || !messageTemplate.trim() || !allRuleValuesPresentForS
     setIsLoading(true);
     setError('');
     try {
-      // TODO: Create this API endpoint
       const res = await fetch('/api/campaigns', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -117,8 +113,7 @@ if (!campaignName.trim() || !messageTemplate.trim() || !allRuleValuesPresentForS
       if (!res.ok) {
         throw new Error(data.message || 'Failed to create campaign');
       }
-      // On success, redirect to campaign history (we'll build this later)
-      router.push('/campaigns/history'); // Or just router.push('/campaigns');
+      router.push('/campaigns/history'); 
     } catch (err) {
       setError(err.message);
     } finally {
@@ -127,13 +122,13 @@ if (!campaignName.trim() || !messageTemplate.trim() || !allRuleValuesPresentForS
   };
 
   if (status === 'loading') return <p className="text-center mt-10">Loading session...</p>;
-  if (!session) return null; // Should be redirected by useEffect
+  if (!session) return null; 
 
-  // Available fields and operators for rules
+  
   const availableFields = [
     { value: 'totalSpend', label: 'Total Spend (INR)' },
     { value: 'visitCount', label: 'Visit Count' },
-    { value: 'lastActiveDate', label: 'Days Since Last Active' }, // We'll need to handle this in backend
+    { value: 'lastActiveDate', label: 'Days Since Last Active' }, 
   ];
   const operators = [
     { value: '>', label: '>' },
@@ -141,7 +136,7 @@ if (!campaignName.trim() || !messageTemplate.trim() || !allRuleValuesPresentForS
     { value: '=', label: '=' },
     { value: '>=', label: '>=' },
     { value: '<=', label: '<=' },
-    // { value: '!=', label: '!=' }, // Add more as needed
+    
   ];
 
   const handleGenerateRulesFromNL = async () => {
@@ -151,7 +146,7 @@ if (!campaignName.trim() || !messageTemplate.trim() || !allRuleValuesPresentForS
   }
   setIsGeneratingRules(true);
   setNlError('');
-  setError(''); // Clear general form error as well
+  setError(''); 
 
   try {
     const res = await fetch('/api/ai/nl-to-rules', {
@@ -167,21 +162,20 @@ if (!campaignName.trim() || !messageTemplate.trim() || !allRuleValuesPresentForS
     }
 
     if (data.rules && Array.isArray(data.rules) && data.rules.length > 0) {
-      // Validate if the rules structure is somewhat correct (basic check)
       const isValidStructure = data.rules.every(
         rule => typeof rule.field === 'string' &&
                 typeof rule.operator === 'string' &&
-                rule.value !== undefined // value can be number or string
+                rule.value !== undefined 
       );
       if (isValidStructure) {
-        setRules(data.rules); // Replace existing rules
-        setNaturalLanguageQuery(''); // Optionally clear the NL query input
+        setRules(data.rules); 
+        setNaturalLanguageQuery(''); 
       } else {
         throw new Error("AI generated rules in an unexpected format. Please try a different query or define rules manually.");
       }
     } else if (data.rules && Array.isArray(data.rules) && data.rules.length === 0) {
         setNlError("AI couldn't identify specific rules from your query. Please try rephrasing or define rules manually.");
-        setRules([{ field: 'totalSpend', operator: '>', value: '', logic: 'AND' }]); // Reset to default
+        setRules([{ field: 'totalSpend', operator: '>', value: '', logic: 'AND' }]); 
     }
      else {
       throw new Error("AI did not return valid rules. Please try again or define rules manually.");
@@ -189,7 +183,7 @@ if (!campaignName.trim() || !messageTemplate.trim() || !allRuleValuesPresentForS
   } catch (err) {
     console.error("NL to Rules error:", err);
     setNlError(err.message);
-    // Optionally, don't clear existing rules if AI fails
+    
   } finally {
     setIsGeneratingRules(false);
   }
@@ -200,7 +194,6 @@ const handleGenerateMessageSuggestions = async () => {
   setMessageGenError('');
   setMessageSuggestions([]);
 
-  // Construct a brief description of the audience from rules for better AI context
   let audienceDescription = "a general audience";
   if (rules.length > 0 && rules.some(rule => rule.value.toString().trim() !== '')) {
     audienceDescription = rules.map(r => `${r.field} ${r.operator} ${r.value}`).join(' AND ');
@@ -211,7 +204,7 @@ const handleGenerateMessageSuggestions = async () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        campaignName: campaignName, // Pass campaign name for context
+        campaignName: campaignName, 
         objective: campaignObjective,
         audienceDescription: audienceDescription
       }),
@@ -237,9 +230,8 @@ const handleGenerateMessageSuggestions = async () => {
 };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100"> {/* Keep your new outer div */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100"> 
       <div className="container mx-auto p-4 md:p-8 max-w-4xl">
-        {/* Header section */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-slate-800 flex items-center">
             <span className="bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">Create New Campaign</span>
@@ -250,11 +242,8 @@ const handleGenerateMessageSuggestions = async () => {
           <p className="text-slate-500 mt-2">Define your audience, set campaign rules, and craft engaging messages</p>
         </div>
         
-        {/* Main form */}
         <form onSubmit={handleSubmitCampaign} className="space-y-8"> {/* Added onSubmit */}
-          {/* Card container */}
           <div className="bg-white rounded-xl shadow-md overflow-hidden border border-slate-100">
-            {/* Campaign name section */}
             <div className="p-6 border-b border-slate-100">
               <div className="flex items-center mb-4">
                 <div className="h-8 w-8 rounded-md bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3">
@@ -277,12 +266,10 @@ const handleGenerateMessageSuggestions = async () => {
                   required
                   placeholder="Enter campaign name"
                   className="w-full px-4 py-2 rounded-lg border border-slate-200 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
-// Added: text-slate-700 (or text-gray-700, text-black, etc.)
                 />
               </div>
             </div>
             
-            {/* AI audience description section */}
             <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-slate-100">
               <div className="flex items-center mb-4">
                 <div className="h-8 w-8 rounded-md bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
@@ -322,7 +309,6 @@ const handleGenerateMessageSuggestions = async () => {
               </div>
             </div>
             
-            {/* Rules section */}
             <div className="p-6 border-b border-slate-100">
               <div className="flex items-center mb-4">
                 <div className="h-8 w-8 rounded-md bg-purple-100 flex items-center justify-center text-purple-600 mr-3">
@@ -335,7 +321,6 @@ const handleGenerateMessageSuggestions = async () => {
                 </h2>
               </div>
               
-              {/* Rule rows - DYNAMICALLY RENDERED */}
               <div className="space-y-3 mb-4">
                 {rules.map((rule, index) => (
                   <div key={index} className="rule-group p-4 border border-slate-200  text-slate-700 rounded-lg bg-slate-50 space-y-3 md:space-y-0 md:flex md:items-center md:space-x-3">
@@ -380,7 +365,6 @@ const handleGenerateMessageSuggestions = async () => {
                 ))}
               </div>
               
-              {/* Add rule button */}
               <button
                 type="button"
                 onClick={handleAddRule}
@@ -393,7 +377,6 @@ const handleGenerateMessageSuggestions = async () => {
               </button>
             </div>
             
-            {/* Preview section */}
             <div className="p-6 border-b border-slate-100">
               <div className="flex items-center mb-4">
                 <div className="h-8 w-8 rounded-md bg-amber-100 flex items-center justify-center text-amber-600 mr-3">
@@ -421,11 +404,9 @@ const handleGenerateMessageSuggestions = async () => {
                   </p>
                 </div>
               )}
-              {/* Display general form error if it exists and nlError does not (to avoid double errors) */}
               {error && !nlError && <p className="mt-2 text-sm text-red-500">{error}</p>}
             </div>
             
-            {/* Campaign objective section */}
             <div className="p-6 border-b border-slate-100">
               <div className="flex items-center mb-4">
                 <div className="h-8 w-8 rounded-md bg-teal-100 flex items-center justify-center text-teal-600 mr-3">
@@ -449,7 +430,6 @@ const handleGenerateMessageSuggestions = async () => {
               </div>
             </div>
             
-            {/* Message template section */}
             <div className="p-6">
               <div className="flex items-center mb-4">
                 <div className="h-8 w-8 rounded-md bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3">
@@ -487,7 +467,6 @@ const handleGenerateMessageSuggestions = async () => {
               
               {messageGenError && <p className="mt-1 text-xs text-red-500">{messageGenError}</p>}
               
-              {/* Message suggestions - DYNAMICALLY RENDERED */}
               {messageSuggestions.length > 0 && (
                 <div className="mt-4 p-4 border border-slate-200 rounded-lg bg-slate-50">
                   <h4 className="text-sm font-medium text-slate-900 mb-2 flex items-center">
@@ -518,8 +497,7 @@ const handleGenerateMessageSuggestions = async () => {
               )}
             </div>
           </div>
-          <div className="flex justify-end mt-8"> {/* Added mt-8 for spacing if desired, or remove for default form spacing */}
-            {/* Display general form error if it exists, and specifically if nlError or messageGenError does not already cover it */}
+          <div className="flex justify-end mt-8"> 
             {error && !nlError && !messageGenError && (
               <p className="text-red-500 text-sm mr-4 self-center">{error}</p>
             )}
@@ -534,8 +512,8 @@ const handleGenerateMessageSuggestions = async () => {
               {isLoading ? 'Saving & Launching...' : 'Save & Launch Campaign'}
             </button>
           </div>
-        </form> {/* End of Main form */}
-      </div> {/* End of container mx-auto div */}
-    </div> // End of min-h-screen bg-gradient div
+        </form> 
+      </div> 
+    </div> 
   );
 }
