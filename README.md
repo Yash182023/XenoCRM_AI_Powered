@@ -275,8 +275,6 @@ README.md
 
 * **Dummy Vendor: Message delivery is simulated.**
 
-* **BullMQ Worker: The BullMQ setup is for local demonstration; the deployed version uses QStash.**
-
 ### 10. Future Improvements
 
 * Implement full OR logic and rule grouping in the manual segment builder.
