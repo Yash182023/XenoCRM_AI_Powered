@@ -225,43 +225,43 @@ README.md
 ```
 ### 8. How to Use Key Features
 
-## Login: Access the application and sign in with Google.
+* Login: Access the application and sign in with Google.
 
-## Data Ingestion (for testing):
+* Data Ingestion (for testing):
 
-## Use Postman (or similar API client).
+* Use Postman (or similar API client).
 
-# POST to /api/customers with JSON: 
+* POST to /api/customers with JSON: 
 ```{"name": "Jane Doe", "email": "jane@example.com", "totalSpend": 200, "visitCount": 5}```
 
-# POST to /api/orders with JSON: 
+* POST to /api/orders with JSON: 
 ```{"customerId": "<valid_customer_id>", "amount": 75}```
 
 ## Data is queued for asynchronous processing.
 
 # Create a Campaign:
 
-* **Navigate to "Create Campaign."**
+* Navigate to "Create Campaign."
 
-* **Enter Campaign Name.**
+* Enter Campaign Name.
 
-* **AI Audience: Type description (e.g., "users with high spend and many visits") and click "Generate Rules."**
+* AI Audience: Type description (e.g., "users with high spend and many visits") and click "Generate Rules."
 
-* **Manual Rules: Add/modify rules using the builder (AND logic).**
+* Manual Rules: Add/modify rules using the builder (AND logic).
 
-* **Click "Preview Audience Size."**
+* Click "Preview Audience Size."
 
-* **AI Message Suggestions: Type objective, click "Get AI Suggestions." Select or write a message. Use {{name}}.**
+* AI Message Suggestions: Type objective, click "Get AI Suggestions." Select or write a message. Use {{name}}.
 
-* **Click "Save & Launch Campaign."**
+* Click "Save & Launch Campaign."
 
 ## View Campaign History & Insights:
 
-* **Navigate to "Campaign History."**
+* Navigate to "Campaign History."
 
-* **View campaigns with status and delivery stats.**
+* View campaigns with status and delivery stats.
 
-* **Click "Get AI Performance Summary" for an AI-generated insight.**
+* Click "Get AI Performance Summary" for an AI-generated insight.
 
 ### 9. Known Limitations & Assumptions
 
