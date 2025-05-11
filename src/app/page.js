@@ -88,7 +88,7 @@ export default function HomePage() {
 
       {/* Quick Action Cards */}
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-slate-800 mb-6">Quick Actions</h2>
+        <h2 className="text-2xl font-bold text-white-800 mb-6">Quick Actions</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <Link href="/campaigns/create" className="block group">
             <div className="bg-white rounded-xl shadow-md hover:shadow-lg p-6 border border-slate-100 transition duration-300 h-full">
