@@ -338,21 +338,21 @@ const handleGenerateMessageSuggestions = async () => {
               {/* Rule rows - DYNAMICALLY RENDERED */}
               <div className="space-y-3 mb-4">
                 {rules.map((rule, index) => (
-                  <div key={index} className="rule-group p-4 border border-slate-200 rounded-lg bg-slate-50 space-y-3 md:space-y-0 md:flex md:items-center md:space-x-3">
+                  <div key={index} className="rule-group p-4 border border-slate-200  text-slate-700 rounded-lg bg-slate-50 space-y-3 md:space-y-0 md:flex md:items-center md:space-x-3">
                     {index > 0 && (
-                      <div className="hidden md:block font-semibold text-slate-500 text-center px-2">AND</div>
+                      <div className="hidden md:block font-semibold text-slate-700 text-center px-2">AND</div>
                     )}
                     <select
                       value={rule.field}
                       onChange={(e) => handleRuleChange(index, 'field', e.target.value)}
-                      className="w-full md:flex-1 px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
+                      className="w-full md:flex-1 px-3 py-2 rounded-lg border border-slate-200  text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
                     >
                       {availableFields.map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
                     </select>
                     <select
                       value={rule.operator}
                       onChange={(e) => handleRuleChange(index, 'operator', e.target.value)}
-                      className="w-full md:flex-1 px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
+                      className="w-full md:flex-1 px-3 py-2 rounded-lg border border-slate-200  text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
                     >
                       {operators.map(op => <option key={op.value} value={op.value}>{op.label}</option>)}
                     </select>
@@ -443,7 +443,7 @@ const handleGenerateMessageSuggestions = async () => {
                   value={campaignObjective}
                   onChange={(e) => setCampaignObjective(e.target.value)}
                   placeholder="e.g., Re-engage inactive users, Announce new product, Boost sales"
-                  className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-200"
+                  className="w-full px-4 py-2 rounded-lg border border-slate-200  text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-200"
                 />
                 <p className="mt-1 text-xs text-slate-500">Optional - helps AI generate better messages</p>
               </div>
@@ -468,7 +468,7 @@ const handleGenerateMessageSuggestions = async () => {
                   onChange={(e) => setMessageTemplate(e.target.value)}
                   required
                   placeholder="E.g., Hi {{name}}, here's a special offer for you!"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-200  text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
                 ></textarea>
                 <button
                   type="button"
