@@ -180,7 +180,7 @@ export default function CampaignHistoryPage() {
                   <div className="p-5 md:p-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
                     <div>
                         <p className="text-xs text-slate-500 uppercase tracking-wider">Audience</p>
-                        <p className="text-2xl font-bold text-slate-700 mt-1">{campaign.audienceSize ?? '0'}</p>
+                        <p className="text-2xl font-bold text-slate-900 mt-1">{campaign.audienceSize ?? '0'}</p>
                     </div>
                     <div>
                         <p className="text-xs text-slate-500 uppercase tracking-wider">Sent</p>
@@ -205,7 +205,7 @@ export default function CampaignHistoryPage() {
                     <div className="p-5 md:p-6 border-t border-slate-200 bg-slate-50/50">
                       {/* Audience Rules */}
                       <div className="mb-4">
-                        <h3 className="text-sm font-semibold text-slate-700 mb-1 flex items-center">
+                        <h3 className="text-sm font-semibold text-slate-900 mb-1 flex items-center">
                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="mr-2 text-purple-600" viewBox="0 0 16 16"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="mr-2 text-purple-600" viewBox="0 0 16 16">
     <path d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
 </svg><path d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
@@ -218,7 +218,7 @@ export default function CampaignHistoryPage() {
 
                       {/* Message Template */}
                       <div className="mb-4">
-                        <h3 className="text-sm font-semibold text-slate-700 mb-1 flex items-center">
+                        <h3 className="text-sm font-semibold text-slate-900 mb-1 flex items-center">
                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="mr-2 text-indigo-600" viewBox="0 0 16 16"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="mr-2 text-indigo-600" viewBox="0 0 16 16">
     <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z"/>
 </svg><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z"/></svg>
@@ -243,13 +243,13 @@ export default function CampaignHistoryPage() {
                         {aiSummaries[campaign._id] && (
                           <div className="mt-3 p-4 border border-slate-200 rounded-lg bg-white shadow">
                             <h5 className="text-sm font-semibold text-slate-800 mb-1">AI Performance Insights:</h5>
-                            <p className="text-sm text-slate-700 whitespace-pre-wrap">{aiSummaries[campaign._id]}</p>
+                            <p className="text-sm text-slate-900 whitespace-pre-wrap">{aiSummaries[campaign._id]}</p>
                             <button
                               onClick={() => {
                                   setAiSummaries(prev => ({...prev, [campaign._id]: null}));
                                   setSummaryError(prev => ({...prev, [campaign._id]: null}));
                               }}
-                              className="mt-2 text-xs text-slate-500 hover:text-slate-700"
+                              className="mt-2 text-xs text-slate-500 hover:text-slate-900"
                             >
                               Clear Summary
                             </button>
