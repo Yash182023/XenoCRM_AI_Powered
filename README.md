@@ -36,8 +36,8 @@ This project is a Mini Customer Relationship Management (CRM) platform built as 
 
 ## 2. Live Demo & Video
 
-*   **Live Deployed Application:** `[Link to your Vercel/Render/Railway deployment]` *(Will be updated upon deployment)*
-*   **Demo Video (Max 7 mins):** `[Link to your YouTube/Loom/Drive video]` *(Will be updated upon recording)*
+*   **Live Deployed Application:** `[https://xeno-crm-ai-powered.vercel.app/]` 
+*   **Demo Video (Max 7 mins):** `[https://youtu.be/hCzPe3oEahU?si=2h7k9_LDgMfzh-RN]`
 
 ---
 
