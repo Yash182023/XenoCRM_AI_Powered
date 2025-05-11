@@ -184,19 +184,19 @@ Data posted to /api/customers will be published via QStash, which then calls you
 
 ### 6. Deployment
 
-## Platform: The application is deployed on Vercel.
+* Platform: The application is deployed on Vercel.
 
-## Database: MongoDB Atlas (cloud-hosted).
+* Database: MongoDB Atlas (cloud-hosted).
 
-## Asynchronous Processing: Upstash QStash (ASYNC_PROCESSING_MODE=qstash).
+* Asynchronous Processing: Upstash QStash (ASYNC_PROCESSING_MODE=qstash).
 
-## Environment Variables: All variables from .env.local must be configured in Vercel project settings.
+* Environment Variables: All variables from .env.local must be configured in Vercel project settings.
 
-## NEXTAUTH_URL must be the Vercel production URL (e.g., https://your-app.vercel.app).
+* NEXTAUTH_URL must be the Vercel production URL (e.g., https://your-app.vercel.app).
 
-## QSTASH_CUSTOMER_CONSUMER_URL must be the Vercel production consumer URL (e.g., https://your-app.vercel.app/api/consumers/process-customer).
+* QSTASH_CUSTOMER_CONSUMER_URL must be the Vercel production consumer URL (e.g., https://your-app.vercel.app/api/consumers/process-customer).
 
-## Google OAuth Configuration: The Vercel production URL must be added to "Authorized JavaScript origins" and the callback URL (https://<your-app>.vercel.app/api/auth/callback/google) to "Authorized redirect URIs" in the Google Cloud Console.
+* Google OAuth Configuration: The Vercel production URL must be added to "Authorized JavaScript origins" and the callback URL (https://<your-app>.vercel.app/api/auth/callback/google) to "Authorized redirect URIs" in the Google Cloud Console.
 
 ### 7. Project Structure (Overview)
 ```
