@@ -1,8 +1,0 @@
-pass-QEdvghH17KHkwlji
-username-sharmayashat17
-client- 709081477699-i0q8rh38708e6pt33llh075r1k3hhvvl.apps.googleusercontent.com
-client-secret = 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
-Qstashurl-https://qstash.upstash.io
-QStashToken-eyJVc2VySUQiOiI5Nzc3ODRkNC1kNjc0LTRiMGMtODIxNC1hMDI1NDdlZjFkNTIiLCJQYXNzd29yZCI6ImI2M2EzN2Y1YWMyODQ0Y2M4NjdkNzgzYWUwODAyYjRiIn0=
-QStashCurrSign-sig_7PjohCBsfQyfWocK4T2KtbqRyL4a
-QStashnextSign-sig_6vxW4UqKQNvayyDmn4WphU1gahp8
