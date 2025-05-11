@@ -1,7 +1,7 @@
-# Xeno SDE Internship Assignment - Mini CRM Platform (2025)
+# Xeno - Mini CRM Platform (2025)
 
-**Author:** [Your Name]
-**Submission Date:** May 2025 *(Adjust as needed)*
+**Author:** [Yash Sharma]
+**Submission Date:** May 2025
 
 ---
 
