@@ -159,68 +159,47 @@ ASYNC_PROCESSING_MODE="bullmq"
 REDIS_HOST="localhost"
 REDIS_PORT="6379"
 # REDIS_PASSWORD=""
+```
 
-Running the Application
+### Running the Application
 
-Start the Next.js development server:
+## Start the Next.js development server:
 
-npm run dev
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Bash
-IGNORE_WHEN_COPYING_END
+```npm run dev```
 
 The application will be available at http://localhost:3000.
 
-Testing Asynchronous Processing Locally
+### Testing Asynchronous Processing Locally
 
-If using BullMQ (ASYNC_PROCESSING_MODE="bullmq" or not set):
+QStash (ASYNC_PROCESSING_MODE="qstash"):
 
-Ensure your local Redis server is running.
+Start ```ngrok http 3000``` in a separate terminal.
 
-In a separate terminal window, start the customer ingestion worker:
+Update ```QSTASH_CUSTOMER_CONSUMER_URL``` in .env.local with the public HTTPS URL from ngrok.
 
-npm run worker:customer
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Bash
-IGNORE_WHEN_COPYING_END
-
-(This script needs to be defined in package.json, e.g., "worker:customer": "node workers/customerWorker.js")
-
-Data posted to /api/customers will be added to BullMQ and processed by this worker.
-
-If using QStash (ASYNC_PROCESSING_MODE="qstash"):
-
-Start ngrok http 3000 in a separate terminal.
-
-Update QSTASH_CUSTOMER_CONSUMER_URL in .env.local with the public HTTPS URL from ngrok.
-
-Restart npm run dev.
+## Restart 
+```npm run dev```.
 
 Data posted to /api/customers will be published via QStash, which then calls your ngrok URL, forwarding to your local consumer endpoint.
 
-6. Deployment
+### 6. Deployment
 
-Platform: The application is deployed on Vercel.
+## Platform: The application is deployed on Vercel.
 
-Database: MongoDB Atlas (cloud-hosted).
+## Database: MongoDB Atlas (cloud-hosted).
 
-Asynchronous Processing: Upstash QStash (ASYNC_PROCESSING_MODE=qstash).
+## Asynchronous Processing: Upstash QStash (ASYNC_PROCESSING_MODE=qstash).
 
-Environment Variables: All variables from .env.local must be configured in Vercel project settings.
+## Environment Variables: All variables from .env.local must be configured in Vercel project settings.
 
-NEXTAUTH_URL must be the Vercel production URL (e.g., https://your-app.vercel.app).
+## NEXTAUTH_URL must be the Vercel production URL (e.g., https://your-app.vercel.app).
 
-QSTASH_CUSTOMER_CONSUMER_URL must be the Vercel production consumer URL (e.g., https://your-app.vercel.app/api/consumers/process-customer).
+## QSTASH_CUSTOMER_CONSUMER_URL must be the Vercel production consumer URL (e.g., https://your-app.vercel.app/api/consumers/process-customer).
 
-Google OAuth Configuration: The Vercel production URL must be added to "Authorized JavaScript origins" and the callback URL (https://<your-app>.vercel.app/api/auth/callback/google) to "Authorized redirect URIs" in the Google Cloud Console.
+## Google OAuth Configuration: The Vercel production URL must be added to "Authorized JavaScript origins" and the callback URL (https://<your-app>.vercel.app/api/auth/callback/google) to "Authorized redirect URIs" in the Google Cloud Console.
 
-7. Project Structure (Overview)
+### 7. Project Structure (Overview)
+```
 /public                 # Static assets
 /src
 ├── app/                # Next.js App Router: Pages and API Routes
@@ -239,78 +218,75 @@ Google OAuth Configuration: The Vercel production URL must be added to "Authoriz
 ├── components/         # React components (Navbar.jsx, LoginBtn.jsx)
 ├── lib/                # Utilities (mongodb.js, gemini.js, queryBuilder.js, queues/*)
 ├── models/             # Mongoose schemas
-/workers                # (If using BullMQ) Standalone worker scripts
 .env.local              # Local environment variables (GITIGNORED!)
 next.config.js
 package.json
 README.md
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-IGNORE_WHEN_COPYING_END
-8. How to Use Key Features
+```
+### 8. How to Use Key Features
 
-Login: Access the application and sign in with Google.
+## Login: Access the application and sign in with Google.
 
-Data Ingestion (for testing):
+## Data Ingestion (for testing):
 
-Use Postman (or similar API client).
+## Use Postman (or similar API client).
 
-POST to /api/customers with JSON: {"name": "Jane Doe", "email": "jane@example.com", "totalSpend": 200, "visitCount": 5}
+# POST to /api/customers with JSON: 
+```{"name": "Jane Doe", "email": "jane@example.com", "totalSpend": 200, "visitCount": 5}```
 
-POST to /api/orders with JSON: {"customerId": "<valid_customer_id>", "amount": 75}
+# POST to /api/orders with JSON: 
+```{"customerId": "<valid_customer_id>", "amount": 75}```
 
-Data is queued for asynchronous processing.
+## Data is queued for asynchronous processing.
 
-Create a Campaign:
+# Create a Campaign:
 
-Navigate to "Create Campaign."
+* **Navigate to "Create Campaign."**
 
-Enter Campaign Name.
+* **Enter Campaign Name.**
 
-AI Audience: Type description (e.g., "users with high spend and many visits") and click "Generate Rules."
+* **AI Audience: Type description (e.g., "users with high spend and many visits") and click "Generate Rules."**
 
-Manual Rules: Add/modify rules using the builder (AND logic).
+* **Manual Rules: Add/modify rules using the builder (AND logic).**
 
-Click "Preview Audience Size."
+* **Click "Preview Audience Size."**
 
-AI Message Suggestions: Type objective, click "Get AI Suggestions." Select or write a message. Use {{name}}.
+* **AI Message Suggestions: Type objective, click "Get AI Suggestions." Select or write a message. Use {{name}}.**
 
-Click "Save & Launch Campaign."
+* **Click "Save & Launch Campaign."**
 
-View Campaign History & Insights:
+## View Campaign History & Insights:
 
-Navigate to "Campaign History."
+* **Navigate to "Campaign History."**
 
-View campaigns with status and delivery stats.
+* **View campaigns with status and delivery stats.**
 
-Click "Get AI Performance Summary" for an AI-generated insight.
+* **Click "Get AI Performance Summary" for an AI-generated insight.**
 
-9. Known Limitations & Assumptions
+### 9. Known Limitations & Assumptions
 
-Rule Builder OR Logic: The manual rule builder primarily supports AND logic. Complex OR logic is better handled by the "Natural Language to Rules" AI or separate campaigns.
+* **Rule Builder OR Logic: The manual rule builder primarily supports AND logic. Complex OR logic is better handled by the "Natural Language to Rules" AI or separate campaigns.**
 
-NL-to-Rules AI: Performs best with clear queries related to available fields (totalSpend, visitCount, lastActiveDate).
+* **NL-to-Rules AI: Performs best with clear queries related to available fields (totalSpend, visitCount, lastActiveDate).**
 
-Error Handling: Basic error handling is implemented; more granular feedback could be added.
+* **Error Handling: Basic error handling is implemented; more granular feedback could be added.**
 
-Stats Calculation: Campaign history stats are calculated on-the-fly. For very large scale, optimization (e.g., aggregation) would be needed.
+* **Stats Calculation: Campaign history stats are calculated on-the-fly. For very large scale, optimization (e.g., aggregation) would be needed.**
 
-Dummy Vendor: Message delivery is simulated.
+* **Dummy Vendor: Message delivery is simulated.**
 
-BullMQ Worker: The BullMQ setup is for local demonstration; the deployed version uses QStash.
+* **BullMQ Worker: The BullMQ setup is for local demonstration; the deployed version uses QStash.**
 
-10. Future Improvements
+### 10. Future Improvements
 
-Implement full OR logic and rule grouping in the manual segment builder.
+* Implement full OR logic and rule grouping in the manual segment builder.
 
-Enhance rule builder with a visual (e.g., drag-and-drop) interface.
+* Enhance rule builder with a visual (e.g., drag-and-drop) interface.
 
-Add more AI features (e.g., audience lookalike, smart scheduling).
+* Add more AI features (e.g., audience lookalike, smart scheduling).
 
-Develop a UI for customer/order data management.
+* Develop a UI for customer/order data management.
 
-Implement comprehensive analytics dashboards.
+* Implement comprehensive analytics dashboards.
 
-Introduce A/B testing for campaigns.
+* Introduce A/B testing for campaigns.
